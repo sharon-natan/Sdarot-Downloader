@@ -11,6 +11,8 @@ A Module that allow you to batch download from the Sdarot website.
 
 and start
 
+** Its will download to your download folder in the folder Sdarot
+
 #Example Define Object
 
 ```
