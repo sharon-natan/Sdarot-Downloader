@@ -164,18 +164,15 @@ class Sdarot:
 
     def __create_download_link(self, episode_data, url_info):
         key_of_watch = list(episode_data['watch'])[0]
-        requestURL = 'https://' + episode_data['url'] + '/w/episode/' + url_info['SID'] + '/' + key_of_watch + '/' + episode_data[
-            'VID'] + '.mp4?token=' + \
-                     episode_data['watch'][key_of_watch] + '&time=' + str(episode_data['time']) + '&uid=' + \
-                     episode_data['uid']
-
+        requestURL = 'https:' + episode_data['watch'][key_of_watch]
+        episode_data['host'] = re.search('^((http[s]?):\/)?\/?([\w.-]+)', requestURL).group(0).split('https://')[-1]
         headers = {
             'DNT': '1',
             'accept': 'application/json, text/javascript, */*; q=0.01',
             'Accept-Encoding': 'identity;q=1, *;q=0',
             'accept-language': 'he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7',
             'Connection': 'keep-alive',
-            'Host': episode_data['url'],
+            'Host': episode_data['host'],
             'Range': 'bytes=0-',
             'Referer': url_info['url'],
             'Sec-Fetch-Dest': 'video',
@@ -184,9 +181,9 @@ class Sdarot:
             'User-Agent': "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; AS; rv:11.0) like Gecko",  # be IE 11.0
         }
         data_form = {
-            'token': episode_data['watch'][key_of_watch],
-            'time': episode_data['time'],
-            'uid': episode_data['uid']
+            'token': episode_data['watch'][key_of_watch].split('?token=')[-1].split('&time=')[0],
+            'time': episode_data['watch'][key_of_watch].split('?token=')[-1].split('&time=')[-1].split('&uid=')[0],
+            'uid': episode_data['watch'][key_of_watch].split('?token=')[-1].split('&time=')[-1].split('&uid=')[-1]
         }
         try:
 
